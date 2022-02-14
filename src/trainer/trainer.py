@@ -42,8 +42,8 @@ class Trainer():
         
         self.load()
         if args.distributed:
-            self.netG = DDP(self.netG, device_ids= [args.local_rank + 3], output_device=[args.local_rank + 3])
-            self.netD = DDP(self.netD, device_ids= [args.local_rank + 3], output_device=[args.local_rank + 3])
+            self.netG = DDP(self.netG, device_ids= [args.local_rank], output_device=[args.local_rank])
+            self.netD = DDP(self.netD, device_ids= [args.local_rank], output_device=[args.local_rank])
         
         if args.tensorboard: 
             self.writer = SummaryWriter(os.path.join(args.save_dir, 'log'))
