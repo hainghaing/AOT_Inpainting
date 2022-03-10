@@ -50,7 +50,7 @@ class UpConv(nn.Module):
     def forward(self, x):
         return self.conv(F.interpolate(x, scale_factor=2, mode='bilinear', align_corners=True))
 
-
+# gated residual block..?
 class AOTBlock(nn.Module):
     def __init__(self, dim, rates):
         super(AOTBlock, self).__init__()

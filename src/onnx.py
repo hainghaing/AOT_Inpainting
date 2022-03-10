@@ -57,7 +57,7 @@ def main_worker(args, use_gpu=False):
 
     with torch.no_grad():
         torch.onnx.export(
-            exporterModel, dummy_input, "inpainting.onnx",
+            exporterModel, dummy_input, "inpainting_256_fin.onnx",
             verbose = True,
             do_constant_folding = True,
             opset_version = 12,

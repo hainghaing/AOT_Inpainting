@@ -4,3 +4,5 @@ __pycache__
 *.png
 events.* 
 outputs
+datas/
+datas_512/
