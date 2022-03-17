@@ -3,9 +3,9 @@ import argparse
 parser = argparse.ArgumentParser(description='Image Inpainting')
 
 # data specifications 
-parser.add_argument('--dir_image', type=str, default='datas',
+parser.add_argument('--dir_image', type=str, default='/mnt/DATA/users/JHKIM/aot_inpainting/datas/datas_512',
                     help='image dataset directory')
-parser.add_argument('--dir_mask', type=str, default='datas',
+parser.add_argument('--dir_mask', type=str, default='/mnt/DATA/users/JHKIM/aot_inpainting/datas/datas_512',
                     help='mask dataset directory')
 parser.add_argument('--data_train', type=str, default='face',
                     help='dataname used for training')
@@ -56,7 +56,7 @@ parser.add_argument('--iterations', type=int, default=1e6,
                     help='the number of iterations for training')
 parser.add_argument('--batch_size', type=int, default=6,
                     help='batch size in each mini-batch')
-parser.add_argument('--port', type=int, default=11113,
+parser.add_argument('--port', type=int, default=11114,
                     help='tcp port for distributed training')
 parser.add_argument('--resume', action='store_true',
                     help='resume from previous iteration')
@@ -67,7 +67,7 @@ parser.add_argument('--print_every', type=int, default=10,
                     help='frequency for updating progress bar')
 parser.add_argument('--save_every', type=int, default=5000,
                     help='frequency for saving models')
-parser.add_argument('--save_dir', type=str, default='experiments',
+parser.add_argument('--save_dir', type=str, default='/mnt/DATA/users/JHKIM/aot_inpainting/exp',
                     help='directory for saving models and logs')
 parser.add_argument('--tensorboard', action='store_true', default=True,
                     help='default: false, since it will slow training. use it for debugging')

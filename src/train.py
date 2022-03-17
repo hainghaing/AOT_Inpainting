@@ -10,7 +10,7 @@ from trainer.trainer import Trainer
 def main_worker(id, ngpus_per_node, args):
     args.local_rank = args.global_rank = id
     if args.distributed:
-        torch.cuda.set_device(args.local_rank)
+        torch.cuda.set_device(args.local_rank + 3)
         print(f'using GPU {args.world_size}-{args.global_rank} for training')
         torch.distributed.init_process_group(
             backend='nccl', init_method=args.init_method,
