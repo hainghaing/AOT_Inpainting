@@ -9,7 +9,7 @@ parser.add_argument('--dir_mask', type=str, default='/mnt/DATA/users/JHKIM/aot_i
                     help='mask dataset directory')
 parser.add_argument('--data_train', type=str, default='face',
                     help='dataname used for training')
-parser.add_argument('--data_test', type=str, default='celeba',
+parser.add_argument('--data_test', type=str, default='face',
                     help='dataname used for testing')
 parser.add_argument('--image_size', type=int, default=512,
                     help='image size used during training')

@@ -33,13 +33,13 @@ def main_worker(args, use_gpu=True):
     # prepare dataset
     image_paths = []
     for ext in ['.jpg', '.png']: 
-        image_paths.extend(glob(os.path.join(args.dir_image, '*'+ext)))
+        image_paths.extend(glob(os.path.join(args.dir_image, args.data_test, '*'+ext)))
     image_paths.sort()
     print(image_paths)
 
     mask_paths = []
     for ext in ['.jpg', '.png']: 
-        mask_paths.extend(glob(os.path.join(args.dir_mask, '*'+ext)))
+        mask_paths.extend(glob(os.path.join(args.dir_image, args.mask_type, '*'+ext)))
     mask_paths.sort()
     print(image_paths)
     os.makedirs(args.outputs, exist_ok=True)
@@ -58,9 +58,9 @@ def main_worker(args, use_gpu=True):
 
         comp_imgs = (1 - mask) * image + mask * pred_img
         image_name = os.path.basename(ipath).split('.')[0]
-        postprocess(image_masked[0]).save(os.path.join(args.outputs, f'{image_name}_masked.png'))
-        postprocess(pred_img[0]).save(os.path.join(args.outputs, f'{image_name}_pred.png'))
-        postprocess(comp_imgs[0]).save(os.path.join(args.outputs, f'{image_name}_comp.png'))
+        # postprocess(image_masked[0]).save(os.path.join(args.outputs, f'{image_name}_masked.png'))
+        postprocess(pred_img[0]).save(os.path.join(args.pre_train, 'outputs', f'{image_name}_pred.png'))
+        # postprocess(comp_imgs[0]).save(os.path.join(args.outputs, f'{image_name}_comp.png'))
         print(f'saving to {os.path.join(args.outputs, image_name)}')
 
 

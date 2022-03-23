@@ -43,7 +43,9 @@ def main_worker(args, use_gpu=False):
     
     # Model and version
     net = importlib.import_module('model.'+args.model)
-    model = net.InpaintGenerator(args)
+    model = net.UnetEffb4Generator(4, 3, False).cuda()
+    # model = net.UnetMobileGenerator(args, 4, 3).cuda()
+    # model = net.InpaintGenerator(args)
     model.load_state_dict(torch.load(args.pre_train, map_location=device))
 
     exporterModel = Exporter(model)
@@ -57,7 +59,7 @@ def main_worker(args, use_gpu=False):
 
     with torch.no_grad():
         torch.onnx.export(
-            exporterModel, dummy_input, "inpainting_256_fin.onnx",
+            exporterModel, dummy_input, "effb4_cat.onnx",
             verbose = True,
             do_constant_folding = True,
             opset_version = 12,
