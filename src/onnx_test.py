@@ -10,8 +10,8 @@ ort_input = {ort_session.get_inputs()[0].name: input_image}
 mask = ort_session.run(None, ort_input)[0]       # b, h, w, 1
 
 ###################### inpainting
-# ort_session = onnxruntime.InferenceSession("inpainting.onnx")
-ort_session = onnxruntime.InferenceSession("inp512_mob.onnx")
+ort_session = onnxruntime.InferenceSession("inpainting.onnx")
+# ort_session = onnxruntime.InferenceSession("inp512_mob.onnx")
 
 input_image = np.expand_dims(input_image, axis=0)
 

@@ -13,8 +13,6 @@ from data import create_loader
 from loss import loss as loss_module
 from .common import timer, reduce_loss_dict
 
-import cv2
-
 
 class Trainer():
     def __init__(self, args):
@@ -32,24 +30,29 @@ class Trainer():
         # Image generator input: [rgb(3) + mask(1)], discriminator input: [rgb(3)]
         net = importlib.import_module('model.'+args.model)
         ############### ?
-        # self.netG = net.UnetMobileGenerator(args, 4, 3).cuda()
+        # self.netG = net.UnetMobileEncGenerator(4, 3).cuda()
+        # self.netG = net.UnetMobileEncSkipGenerator(4, 3).cuda()
+        # self.netG = net.UnetMobileGenerator(4, 3).cuda()
         # self.netG = net.UnetEffb4Generator(4, 3, False).cuda()
-        self.netG = net.UnetEffb6Generator(4, 3, False).cuda()
-        # self.netG = net.InpaintGenerator(args).cuda()
+        # self.netG = net.UnetEffb6Generator(4, 3, False).cuda()
+        self.netG = net.InpaintGenerator(args).cuda()
+
+        #######################
+
         self.optimG = torch.optim.Adam(
             self.netG.parameters(), lr=args.lrg, betas=(args.beta1, args.beta2))
 
-        aotgan = importlib.import_module('model.aotgan')
-        self.netD = aotgan.Discriminator().cuda()
+        # aotgan = importlib.import_module('model.aotgan')
+        self.netD = net.Discriminator(args).cuda()
         self.optimD = torch.optim.Adam(
             self.netD.parameters(), lr=args.lrd, betas=(args.beta1, args.beta2))
         
         self.load()
         if args.distributed:
-            self.netG = DDP(self.netG, device_ids= [args.local_rank], output_device=[args.local_rank], find_unused_parameters=True)
-            self.netD = DDP(self.netD, device_ids= [args.local_rank], output_device=[args.local_rank], find_unused_parameters=True)
-            # self.netG = DDP(self.netG, device_ids= [args.local_rank + 3], output_device=[args.local_rank + 3], find_unused_parameters=True)
-            # self.netD = DDP(self.netD, device_ids= [args.local_rank + 3], output_device=[args.local_rank + 3], find_unused_parameters=True)
+            # self.netG = DDP(self.netG, device_ids= [args.local_rank], output_device=[args.local_rank], find_unused_parameters=True)
+            # self.netD = DDP(self.netD, device_ids= [args.local_rank], output_device=[args.local_rank], find_unused_parameters=True)
+            self.netG = DDP(self.netG, device_ids= [args.local_rank + 3], output_device=[args.local_rank + 3], find_unused_parameters=True)
+            self.netD = DDP(self.netD, device_ids= [args.local_rank + 3], output_device=[args.local_rank + 3], find_unused_parameters=True)
         
         if args.tensorboard: 
             self.writer = SummaryWriter(os.path.join(args.save_dir, 'log'))

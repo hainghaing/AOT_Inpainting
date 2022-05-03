@@ -30,12 +30,12 @@ class InpaintGenerator(BaseNetwork):
             nn.Conv2d(64, 3, 3, stride=1, padding=1)
         )
 
-        self.init_weights()
+        self.init_weights(init_type=args.init)
 
     def forward(self, x, mask):
         x = torch.cat([x, mask], dim=1)
-        x = self.encoder(x)
-        x = self.middle(x)
+        x = self.encoder(x)     ## 2, 256, 128, 128
+        x = self.middle(x)      ## 2, 256, 128, 128
         x = self.decoder(x)
         x = torch.tanh(x)
         return x
@@ -90,7 +90,7 @@ def my_layer_norm(feat):
 
 # ----- discriminator -----
 class Discriminator(BaseNetwork):
-    def __init__(self, ):
+    def __init__(self, args):
         super(Discriminator, self).__init__()
         inc = 3
         self.conv = nn.Sequential(
@@ -105,7 +105,7 @@ class Discriminator(BaseNetwork):
             nn.Conv2d(512, 1, 4, stride=1, padding=1)
         )
 
-        self.init_weights()
+        self.init_weights(init_type=args.init)
 
     def forward(self, x):
         feat = self.conv(x)

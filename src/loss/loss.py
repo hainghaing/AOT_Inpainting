@@ -13,7 +13,8 @@ class L1():
     def __call__(self, x, y):
         return self.calc(x, y)
 
-
+# content loss of perceptual loss
+# 왜 L1 loss를 사용? 원래는 L2 loss를 사용함
 class Perceptual(nn.Module):
     def __init__(self, weights=[1.0, 1.0, 1.0, 1.0, 1.0]):
         super(Perceptual, self).__init__()
@@ -30,7 +31,8 @@ class Perceptual(nn.Module):
                 x_vgg[f'relu{prefix[i]}_1'], y_vgg[f'relu{prefix[i]}_1'])
         return content_loss
 
-
+# style loss of perceptual loss
+# 왜 L1 loss를 사용? 원래는 L2 loss를 사용함
 class Style(nn.Module):
     def __init__(self):
         super(Style, self).__init__()
@@ -70,7 +72,7 @@ class nsgan():
         
         return dis_loss, gen_loss
 
-
+# soft mask-guided patchGan
 class smgan():
     def __init__(self, ksize=71): 
         self.ksize = ksize
@@ -87,6 +89,7 @@ class smgan():
         b, c, ht, wt = masks.size()
         
         # Handle inconsistent size between outputs and masks
+        # soft 한 값을 예측하는 과정 (interpolate)
         if h != ht or w != wt:
             g_fake = F.interpolate(g_fake, size=(ht, wt), mode='bilinear', align_corners=True)
             d_fake = F.interpolate(d_fake, size=(ht, wt), mode='bilinear', align_corners=True)

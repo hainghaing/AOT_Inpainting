@@ -3,10 +3,15 @@ import argparse
 parser = argparse.ArgumentParser(description='Image Inpainting')
 
 # data specifications 
-parser.add_argument('--dir_image', type=str, default='/mnt/DATA/users/JHKIM/aot_inpainting/datas/datas_512',
+###################### Pretrain model용 Path
+parser.add_argument('--dir_image', type=str, default='/mnt/DATA/users/JHKIM/aot_inpainting/datas/FFHQ_512_mask1',
                     help='image dataset directory')
-parser.add_argument('--dir_mask', type=str, default='/mnt/DATA/users/JHKIM/aot_inpainting/datas/datas_512',
+parser.add_argument('--dir_mask', type=str, default='/mnt/DATA/users/JHKIM/aot_inpainting/datas/FFHQ_512_mask1',
                     help='mask dataset directory')
+# parser.add_argument('--dir_image', type=str, default='/mnt/DATA/users/JHKIM/aot_inpainting/datas/datas_512',
+#                     help='image dataset directory')
+# parser.add_argument('--dir_mask', type=str, default='/mnt/DATA/users/JHKIM/aot_inpainting/datas/datas_512',
+#                     help='mask dataset directory')
 parser.add_argument('--data_train', type=str, default='face',
                     help='dataname used for training')
 parser.add_argument('--data_test', type=str, default='face',
@@ -33,6 +38,8 @@ parser.add_argument('--num_workers', type=int, default=4,
                     help='number of workers used in data loader')
 
 # optimization specifications 
+parser.add_argument('--init', type=str, default='normal',
+                    help='initialization for weights')
 parser.add_argument('--lrg', type=float, default=1e-4,
                     help='learning rate for generator')
 parser.add_argument('--lrd', type=float, default=1e-4,
@@ -40,12 +47,14 @@ parser.add_argument('--lrd', type=float, default=1e-4,
 parser.add_argument('--optimizer', default='ADAM',
                     choices=('SGD', 'ADAM', 'RMSprop'),
                     help='optimizer to use (SGD | ADAM | RMSprop)')
+# optimizer가 ADAM 일때 사용하는 parameter
 parser.add_argument('--beta1', type=float, default=0.5,
                     help='beta1 in optimizer')
 parser.add_argument('--beta2', type=float, default=0.999,
                     help='beta2 in optimier')
 
-# loss specifications 
+# loss specifications
+# rec_loss default ==> 1*L1+250*Style+0.1*Perceptual
 parser.add_argument('--rec_loss', type=str, default='1*L1+250*Style+0.1*Perceptual',
                     help='losses for reconstruction')
 parser.add_argument('--adv_weight', type=float, default=0.01,
@@ -67,8 +76,10 @@ parser.add_argument('--print_every', type=int, default=10,
                     help='frequency for updating progress bar')
 parser.add_argument('--save_every', type=int, default=5000,
                     help='frequency for saving models')
-parser.add_argument('--save_dir', type=str, default='/mnt/DATA/users/JHKIM/aot_inpainting/exp',
+parser.add_argument('--save_dir', type=str, default='/mnt/DATA/users/JHKIM/aot_inpainting/exp/pretrain_ffhq',
                     help='directory for saving models and logs')
+# parser.add_argument('--save_dir', type=str, default='/mnt/DATA/users/JHKIM/aot_inpainting/exp/pretrain',
+#                     help='directory for saving models and logs')
 parser.add_argument('--tensorboard', action='store_true', default=True,
                     help='default: false, since it will slow training. use it for debugging')
 

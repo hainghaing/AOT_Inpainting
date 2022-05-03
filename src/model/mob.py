@@ -47,7 +47,7 @@ class UnetMobileGenerator(nn.Module):
         # self.conv_score = nn.Conv2d(n_channels, n_classes, 1)
 
     def forward(self, x, y):  
-        # x = torch.cat([x, y], dim=1)
+        x = torch.cat([x, y], dim=1)
         
         for n in range(0, 2):
             x = self.backbone.features[n](x)
@@ -114,11 +114,11 @@ class UnetMobileGenerator(nn.Module):
         logging.debug((up4.shape, 'up4'))
         
         up5 = self.dconv5(up4)
-        # print(up5.shape, 'up5')
+        print(up5.size(), 'up5')
         logging.debug((up5.shape, 'up5'))
 
         x = self.conv_last(up5)
-        # print(x.shape, 'conv_last')
+        print(x.size(), 'conv_last')
         logging.debug((x.shape, 'conv_last'))
 
         return x
